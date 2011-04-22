@@ -1,0 +1,7 @@
+*.orig
+*.suo
+*.dbmdl
+*.user
+_ReSharper.*
+bin
+obj
