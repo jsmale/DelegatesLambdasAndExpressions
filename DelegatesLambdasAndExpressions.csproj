@@ -45,6 +45,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltInDelegates.cs" />
+    <Compile Include="BuiltInDelegateTests.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="GenericDelegates.cs" />
     <Compile Include="GenericDelegateTests.cs" />
