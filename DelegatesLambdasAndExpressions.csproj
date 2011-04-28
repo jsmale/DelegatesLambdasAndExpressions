@@ -45,10 +45,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuiltInDelegates.cs" />
+    <Compile Include="AnonymousDelegateTests.cs" />
     <Compile Include="BuiltInDelegateTests.cs" />
-    <Compile Include="Delegates.cs" />
-    <Compile Include="GenericDelegates.cs" />
+    <Compile Include="ExpressionTests.cs" />
+    <Compile Include="LambdasAsDelegateTests.cs" />
     <Compile Include="GenericDelegateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DelegateTests.cs" />

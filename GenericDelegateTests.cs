@@ -4,13 +4,7 @@ namespace DelegatesLambdasAndExpressions
 {
 	[TestClass]
 	public class GenericDelegateTests
-	{
-		GenericDelegates delegates;
-		TestClass testGenericDelegateArg;
-		TestClass genericArgument;
-		TestClass genericNoArgFunctionReturnValue;
-		TestArg genericTestArg;
-
+    {
 		public class TestClass
 		{
 			public TestArg Arg { get; set; }
@@ -18,49 +12,39 @@ namespace DelegatesLambdasAndExpressions
 
 		public class TestArg { }
 
-		public void TestVoidActionWithGenericArg(TestClass testClass)
-		{
-			testGenericDelegateArg = testClass;
-		}
-
-		public TestClass TestGenericNoArgFunction()
-		{
-			return genericNoArgFunctionReturnValue;
-		}
-
-		public TestClass TestGenericWithArgFunction(TestArg testArg)
-		{
-			return new TestClass { Arg = testArg };
-		}
-
-		[TestInitialize]
-		public void Init()
-		{
-			delegates = new GenericDelegates();
-			testGenericDelegateArg = null;
-			genericArgument = new TestClass();
-			genericNoArgFunctionReturnValue = new TestClass();
-			genericTestArg = new TestArg();
-		}
+        public delegate void VoidActionWithGenericArg<in T>(T value);
+        TestClass testGenericDelegateArg;
 
 		[TestMethod]
 		public void VoidWithGenericArgDelegate()
-		{
-			delegates.ExecuteAction(TestVoidActionWithGenericArg, genericArgument);
+        {
+            testGenericDelegateArg = null;
+            var genericArgument = new TestClass();
+		    VoidActionWithGenericArg<TestClass> voidActionWithGenericArg = null;
+		    voidActionWithGenericArg(genericArgument);
 			Assert.AreEqual(genericArgument, testGenericDelegateArg);
 		}
 
+        TestClass genericNoArgFunctionReturnValue;
+        public delegate T NoArgGenericFunction<out T>();
+
 		[TestMethod]
 		public void GenericFunctionNoArgDelegate()
-		{
-			var returnValue = delegates.ExecuteFunction(TestGenericNoArgFunction);
+        {
+            genericNoArgFunctionReturnValue = new TestClass();
+		    NoArgGenericFunction<TestClass> noArgGenericFunction = null;
+		    var returnValue = noArgGenericFunction();
 			Assert.AreEqual(genericNoArgFunctionReturnValue, returnValue);
 		}
+
+        public delegate TOutput GenericFunctionWithGenericArg<out TOutput, in TInput>(TInput value);
 
 		[TestMethod]
 		public void GenericFunctionWithArgDelegate()
 		{
-			var returnValue = delegates.ExecuteFunction(TestGenericWithArgFunction, genericTestArg);
+            var genericTestArg = new TestArg();
+		    GenericFunctionWithGenericArg<TestClass, TestArg> genericFunctionWithGenericArg = null;
+			var returnValue = genericFunctionWithGenericArg(genericTestArg);
 			Assert.AreEqual(genericTestArg, returnValue.Arg);
 		}
 	}

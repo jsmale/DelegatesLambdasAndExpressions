@@ -6,67 +6,51 @@ namespace DelegatesLambdasAndExpressions
 	[TestClass]
 	public class DelegateTests
 	{
-		Delegates delegates;
-		bool testVoidActionExecuted;
-		int testDelegateArg;
-		int noArgFunctionReturnValue;
-		int argument;
-
-		public void TestVoidAction()
-		{
-			testVoidActionExecuted = true;
-		}
-
-		public void TestVoidActionWithArg(int value)
-		{
-			testDelegateArg = value;
-		}
-
-		public int TestNoArgFunction()
-		{
-			return noArgFunctionReturnValue;
-		}
-
-		public int TestFunctionWithArg(int value)
-		{
-			return value;
-		}
-
-		[TestInitialize]
-		public void Init()
-		{
-			delegates = new Delegates();
-			testVoidActionExecuted = false;
-			argument = (new Random()).Next(10, int.MaxValue);
-			testDelegateArg = 0;
-			noArgFunctionReturnValue = (new Random()).Next(10, int.MaxValue);
-		}
+        public delegate void VoidAction();
+        bool testVoidActionExecuted;
 
 		[TestMethod]
 		public void VoidNoArgDelegate()
 		{
-			delegates.ExecuteAction(TestVoidAction);
+		    testVoidActionExecuted = false;
+		    VoidAction voidAction = null;
+            voidAction();
 			Assert.IsTrue(testVoidActionExecuted);
 		}
+
+        public delegate void VoidActionWithArg(int value);
+        int testDelegateArg;
 
 		[TestMethod]
 		public void VoidWithArgDelegate()
 		{
-			delegates.ExecuteAction(TestVoidActionWithArg, argument);
+            testDelegateArg = 0;
+            var argument = (new Random()).Next(10, int.MaxValue);
+		    VoidActionWithArg voidActionWithArg = null; 
+		    voidActionWithArg(argument);
 			Assert.AreEqual(argument, testDelegateArg);
 		}
+
+        public delegate int NoArgFunction();
+        int noArgFunctionReturnValue;
 
 		[TestMethod]
 		public void FunctionNoArgDelegate()
 		{
-			var returnValue = delegates.ExecuteFunction(TestNoArgFunction);
+            noArgFunctionReturnValue = (new Random()).Next(10, int.MaxValue);
+		    NoArgFunction noArgFunction = null;
+            var returnValue = noArgFunction();
 			Assert.AreEqual(noArgFunctionReturnValue, returnValue);
 		}
 
+        public delegate int FunctionWithArg(int value);
+
 		[TestMethod]
 		public void FunctionWithArgDelegate()
-		{
-			var returnValue = delegates.ExecuteFunction(TestFunctionWithArg, argument);
+        {
+            var argument = (new Random()).Next(10, int.MaxValue);
+		    FunctionWithArg functionWithArg = null;
+			var returnValue = functionWithArg(argument);
 			Assert.AreEqual(argument, returnValue);
 		}
 	}
