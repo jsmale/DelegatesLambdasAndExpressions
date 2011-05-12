@@ -12,7 +12,7 @@ namespace DelegatesLambdasAndExpressions
         {
             var valueToBeReturned = 42;
             Expression<Func<int>> expression = () => valueToBeReturned;
-            Func<int> compiledFunc = null;
+            Func<int> compiledFunc = expression.Compile();
             var result = compiledFunc();
             Assert.AreEqual(valueToBeReturned, result);
         }
@@ -25,7 +25,8 @@ namespace DelegatesLambdasAndExpressions
 
         TOutput ExtractPropertyValue<T, TOutput>(T target, Expression<Func<T, TOutput>> property)
         {
-            throw new NotImplementedException();
+            var propertyMethod = property.Compile();
+            return propertyMethod(target);
         }
 
         [TestMethod]
@@ -40,7 +41,7 @@ namespace DelegatesLambdasAndExpressions
 
         string ExtractPropertyName<T>(Expression<Func<T, object>> property)
         {
-            throw new NotImplementedException();
+            return ((MemberExpression) property.Body).Member.Name;
         }
 
         [TestMethod]

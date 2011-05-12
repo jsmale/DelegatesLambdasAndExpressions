@@ -23,7 +23,12 @@ namespace DelegatesLambdasAndExpressions
             EventArgs testEventArgs = null;
             var eventHandled = false;
 
-            EventHandler eventHandler = null;
+            EventHandler eventHandler = (s,args) =>
+            {
+                testEventSender = s;
+                testEventArgs = args;
+                eventHandled = true;
+            };
             eventHandler(sender, eventArgs);
 
             Assert.AreEqual(sender, testEventSender);
@@ -35,7 +40,11 @@ namespace DelegatesLambdasAndExpressions
         public void PredicateTest()
         {
             var predicateExecuted = false;
-            Predicate<string> stringIsNotNullPredicate = null;
+            Predicate<string> stringIsNotNullPredicate = s =>
+            {
+                predicateExecuted = true;
+                return s != null;
+            };
             var result = stringIsNotNullPredicate("I'm not null");
             Assert.IsTrue(result);
             Assert.IsTrue(predicateExecuted);
@@ -46,7 +55,11 @@ namespace DelegatesLambdasAndExpressions
         {
             var comparisonExecuted = false;
             var x = 3; var y = 7;
-            Comparison<int> useCompareTo = null;
+            Comparison<int> useCompareTo = (a,b) =>
+            {
+                comparisonExecuted = true;
+                return a.CompareTo(b);
+            };
             var result = useCompareTo(x, y);
             Assert.AreEqual(x.CompareTo(y), result);
             Assert.IsTrue(comparisonExecuted);
@@ -57,7 +70,11 @@ namespace DelegatesLambdasAndExpressions
         {
             var converterExecuted = false;
             var genericTestArg = new TestArg();
-            Converter<TestArg, TestClass> convertTestArgToTestClass = null;
+            Converter<TestArg, TestClass> convertTestArgToTestClass = a =>
+            {
+                converterExecuted = true;
+                return new TestClass{Arg = a};
+            };
             var result = convertTestArgToTestClass(genericTestArg);
             Assert.AreEqual(genericTestArg, result.Arg);
             Assert.IsTrue(converterExecuted);
@@ -67,7 +84,7 @@ namespace DelegatesLambdasAndExpressions
         public void ActionTest()
         {
             var testActionExecuted = false;
-            Action action = null;
+            Action action = () => testActionExecuted = true;
             action();
             Assert.IsTrue(testActionExecuted);
         }
@@ -77,7 +94,7 @@ namespace DelegatesLambdasAndExpressions
         {
             TestArg testGenericDelegateArg = null;
             var genericTestArg = new TestArg();
-            Action<TestArg> actionWithTestArg = null;
+            Action<TestArg> actionWithTestArg = a => testGenericDelegateArg = a;
             actionWithTestArg(genericTestArg);
             Assert.AreEqual(genericTestArg, testGenericDelegateArg);
         }
@@ -86,7 +103,7 @@ namespace DelegatesLambdasAndExpressions
         public void FunctionTest()
         {
             var genericNoArgFunctionReturnValue = new TestClass();
-            Func<TestClass> noArgFunction = null;
+            Func<TestClass> noArgFunction = () => genericNoArgFunctionReturnValue;
             var result = noArgFunction();
             Assert.AreEqual(genericNoArgFunctionReturnValue, result);
         }
@@ -96,7 +113,11 @@ namespace DelegatesLambdasAndExpressions
         {
             var functionExecuted = false;
             var genericTestArg = new TestArg();
-            Func<TestArg, TestClass> functionWithArg = null;
+            Func<TestArg, TestClass> functionWithArg = a =>
+            {
+                functionExecuted = true;
+                return new TestClass{Arg = a};
+            };
             var result = functionWithArg(genericTestArg);
             Assert.AreEqual(genericTestArg, result.Arg);
             Assert.IsTrue(functionExecuted);
